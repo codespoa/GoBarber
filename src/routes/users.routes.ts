@@ -1,26 +1,49 @@
-import { Router } from 'express'
+import { Router } from "express";
+import { getRepository } from "typeorm";
+import multer from "multer";
 
-import CreateUserService from './../services/CreateUserService';
+import CreateUserService from "./../services/CreateUserService";
+import ensureAuthenticad from "./../middlewares/ensureAuthenticad";
+import user from "../models/User";
+import uploadConfig from "../config/upload";
 
-const usersRouter = Router()
+const usersRouter = Router();
+const upload = multer(uploadConfig);
 
-usersRouter.post('/', async (request, response) => {
-    try {
-        const { name, email, password } = request.body
+usersRouter.get("/", async (request, response) => {
+  const users = getRepository(user);
+  const allUsers = await users.find();
 
-        const createUser = new CreateUserService()
+  return response.json(allUsers);
+});
 
-        const user = createUser.execute({
-            name: name,
-            email: email,
-            password: password
-        })
+usersRouter.post("/", async (request, response) => {
+  try {
+    const { name, email, password } = request.body;
 
-        return response.json(user)
+    const createUser = new CreateUserService();
 
-    }catch(err) {
-        return response.status(400).json( { error: err.message } )
-    }
-})
+    const user = await createUser.execute({
+      name: name,
+      email: email,
+      password: password,
+    });
 
-export default usersRouter
+    delete user.password;
+
+    return response.json(user);
+  } catch (err) {
+    return response.status(400).json({ error: err.message });
+  }
+});
+
+usersRouter.patch(
+  "/avatar",
+  ensureAuthenticad,
+  upload.single("avatar"),
+  async (request, response) => {
+    return response.json({ ok: true });
+  }
+);
+
+export default usersRouter;

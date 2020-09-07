@@ -1,31 +1,37 @@
-import { Router } from 'express'
-import { parseISO } from 'date-fns'
-import { getCustomRepository } from 'typeorm'
+import { Router } from "express";
+import { parseISO } from "date-fns";
+import { getCustomRepository, getRepository } from "typeorm";
 
-import AppointmentsRepository from './../repositories/AppointmentsRepository'
-import CreateAppointmentService from './../services/CreateAppointmentService'
+import AppointmentsRepository from "./../repositories/AppointmentsRepository";
+import CreateAppointmentService from "./../services/CreateAppointmentService";
+import ensureAuthenticad from "./../middlewares/ensureAuthenticad";
 
-const appointmentsRouter = Router()
+const appointmentsRouter = Router();
 
-appointmentsRouter.get('/', (request, response) => {
-    const appointmentsRepository = getCustomRepository(AppointmentsRepository)
-    const allAppointments = appointmentsRepository.find()
+appointmentsRouter.use(ensureAuthenticad);
 
-    return response.json(allAppointments)
-})
+appointmentsRouter.get("/", async (request, response) => {
+  const appointmentsRepository = getCustomRepository(AppointmentsRepository);
+  const allAppointments = await appointmentsRepository.find();
 
-appointmentsRouter.post('/', async (request, response) => {
-    try {
-        const { provider_id, date } = request.body
-        const parsedDate = parseISO(date)
+  return response.json(allAppointments);
+});
 
-        const createAppointment = new CreateAppointmentService()
-        const appointment = await createAppointment.execute({ date: parsedDate, provider_id })
+appointmentsRouter.post("/", async (request, response) => {
+  try {
+    const { provider_id, date } = request.body;
+    const parsedDate = parseISO(date);
 
-        return response.json(appointment)
-    }catch(err) {
-        return response.status(400).json( { error: err.message } )
-    }
-})
+    const createAppointment = new CreateAppointmentService();
+    const appointment = await createAppointment.execute({
+      date: parsedDate,
+      provider_id,
+    });
 
-export default appointmentsRouter
+    return response.json(appointment);
+  } catch (err) {
+    return response.status(400).json({ error: err.message });
+  }
+});
+
+export default appointmentsRouter;

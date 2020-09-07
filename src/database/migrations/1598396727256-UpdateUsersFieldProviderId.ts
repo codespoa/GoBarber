@@ -22,11 +22,11 @@ export default class UpdateUsersFieldProviderId1598396727256 implements Migratio
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropForeignKey('appoinments', 'AppoinmentProvider')
+        await queryRunner.dropForeignKey('appointments', 'AppoinmentProvider')
 
-        await queryRunner.dropColumn('appoinments', 'provider_id')
+        await queryRunner.dropColumn('appointments', 'provider_id')
 
-        await queryRunner.addColumn('appoinments', new TableColumn({
+        await queryRunner.addColumn('appointments', new TableColumn({
             name: 'provider',
             type: 'varchar',
             isNullable: false,
