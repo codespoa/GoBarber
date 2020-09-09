@@ -1,8 +1,10 @@
 import { getRepository } from "typeorm";
 import { compare } from "bcryptjs";
-import { sign } from 'jsonwebtoken'
+import { sign } from "jsonwebtoken";
 
-import configAuth from '../config/auth'
+import configAuth from "../config/auth";
+
+import AppError from "../error/AppError";
 import User from "../models/User";
 
 interface RequestDTO {
@@ -12,7 +14,7 @@ interface RequestDTO {
 
 interface ResponseUser {
   user: User;
-  token: string
+  token: string;
 }
 
 class AuthenticateUserService {
@@ -22,28 +24,30 @@ class AuthenticateUserService {
     const user = await usersRepository.findOne({ where: { email: email } });
 
     if (!user) {
-      throw new Error(
-        "Email e/ou senha incorretos, por favor verifique seus dados"
+      throw new AppError(
+        "Email e/ou senha incorretos, por favor verifique seus dados",
+        401
       );
     }
 
     const passwordMathed = await compare(password, user.password);
     if (!passwordMathed) {
-      throw new Error(
-        "Email e/ou senha incorretos, por favor verifique seus dados"
+      throw new AppError(
+        "Email e/ou senha incorretos, por favor verifique seus dados",
+        401
       );
     }
 
-    const { secret, expiresIn } = configAuth.jwt
+    const { secret, expiresIn } = configAuth.jwt;
 
     const token = sign({}, secret, {
-        subject: user.id,
-        expiresIn
-    })
+      subject: user.id,
+      expiresIn,
+    });
 
     return {
       user,
-      token
+      token,
     };
   }
 }

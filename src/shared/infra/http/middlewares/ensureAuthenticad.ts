@@ -1,7 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import { verify } from "jsonwebtoken";
 
-import configAuth from "../config/auth";
+import configAuth from "../../config/auth";
+
+import AppError from '../error/AppError'
 
 interface TokenPayload {
     iat: number
@@ -17,7 +19,7 @@ export default function ensureAuthenticad(
   const authHeader = request.headers.authorization;
 
   if (!authHeader) {
-    throw new Error("Token JWT foi perdido");
+    throw new AppError("Token JWT foi perdido", 401);
   }
 
   const [, token] = authHeader.split(' ');
@@ -33,6 +35,6 @@ export default function ensureAuthenticad(
     return next();
 
   } catch {
-    throw new Error("Token JWT inválido");
+    throw new AppError("Token JWT inválido", 401);
   }
 }
