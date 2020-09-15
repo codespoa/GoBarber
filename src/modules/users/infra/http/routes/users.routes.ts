@@ -2,12 +2,12 @@ import { Router } from "express";
 import { getRepository } from "typeorm";
 import multer from "multer";
 
-import CreateUserService from "./../services/CreateUserService";
-import UpdateUserAvatarService from "../../modules/users/services/UpdateUserAvatarService";
+import CreateUserService from "@modules/users/services/CreateUserService";
+import UpdateUserAvatarService from "@modules/users/services/UpdateUserAvatarService";
 
-import ensureAuthenticad from "../middlewares/ensureAuthenticad";
-import user from "../../modules/users/entities/User";
-import uploadConfig from "../../config/upload";s
+import ensureAuthenticad from "../middleware/ensureAuthenticad";
+import user from "@modules/users/infra/typeorm/entities/User";
+import uploadConfig from "@config/upload";
 
 const usersRouter = Router();
 const upload = multer(uploadConfig);
@@ -30,7 +30,7 @@ usersRouter.post("/", async (request, response) => {
     password: password,
   });
 
-  delete user.password;
+  // delete user.password;
 
   return response.json(user);
 });
