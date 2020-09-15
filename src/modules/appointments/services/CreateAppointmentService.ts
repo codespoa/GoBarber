@@ -4,7 +4,7 @@ import { getCustomRepository } from "typeorm";
 import AppError from "@shared/error/AppError";
 
 import Appointment from "@modules/appointments/infra/typeorm/entities/Appointment";
-import AppointmentsRepository from "@modules/appointments/repositories/AppointmentsRepository";
+import AppointmentsRepository from "@modules/appointments/infra/typeorm/repositories/AppointmentsRepository";
 
 interface RequestDTO {
   provider_id: string;
@@ -27,12 +27,10 @@ class CreateAppointmentService {
       throw new AppError("Horario de agendamento está indisponível", 400);
     }
 
-    const appointment = appointmentsRepository.create({
+    const appointment = await appointmentsRepository.create({
       provider_id: provider_id,
       date: appointmentDate,
     });
-
-    await appointmentsRepository.save(appointment);
 
     return appointment;
   }

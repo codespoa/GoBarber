@@ -6,7 +6,7 @@ import CreateUserService from "@modules/users/services/CreateUserService";
 import UpdateUserAvatarService from "@modules/users/services/UpdateUserAvatarService";
 
 import ensureAuthenticad from "../middleware/ensureAuthenticad";
-import user from "@modules/users/infra/typeorm/entities/User";
+import user from "../../typeorm/entities/User";
 import uploadConfig from "@config/upload";
 
 const usersRouter = Router();
@@ -47,7 +47,7 @@ usersRouter.patch(
       avatarFilename: request.file.filename,
     });
 
-    delete user.password;
+    // delete user.password;
 
     return response.json(user);
   }
