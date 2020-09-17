@@ -1,6 +1,6 @@
-interface ICreateAppointmentDtO {
+interface ICreateAppointmentDto {
   provider_id: string;
   date: Date;
 }
 
-export default ICreateAppointmentDtO;
+export default ICreateAppointmentDto;

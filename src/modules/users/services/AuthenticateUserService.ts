@@ -1,10 +1,11 @@
-import { getRepository } from "typeorm";
 import { compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 
 import configAuth from "@config/auth";
 
 import AppError from "@shared/error/AppError";
+import IUsersRepository from "@modules/users/repositories/IUsersRepository"
+
 import User from "@modules/users/infra/typeorm/entities/User";
 
 interface RequestDTO {
@@ -18,10 +19,11 @@ interface ResponseUser {
 }
 
 class AuthenticateUserService {
-  public async execute({ email, password }: RequestDTO): Promise<ResponseUser> {
-    const usersRepository = getRepository(User);
+  constructor(private usersRepository: IUsersRepository) {}
 
-    const user = await usersRepository.findOne({ where: { email: email } });
+  public async execute({ email, password }: RequestDTO): Promise<ResponseUser> {
+
+    const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
       throw new AppError(
