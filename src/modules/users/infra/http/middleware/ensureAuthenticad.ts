@@ -3,12 +3,12 @@ import { verify } from "jsonwebtoken";
 
 import configAuth from "@config/auth";
 
-import AppError from '@shared/error/AppError'
+import AppError from "@shared/error/AppError";
 
 interface TokenPayload {
-    iat: number
-    exp: number
-    sub: string
+  iat: number;
+  exp: number;
+  sub: string;
 }
 
 export default function ensureAuthenticad(
@@ -22,18 +22,17 @@ export default function ensureAuthenticad(
     throw new AppError("Token JWT foi perdido", 401);
   }
 
-  const [, token] = authHeader.split(' ');
+  const [, token] = authHeader.split(" ");
 
   try {
     const decoded = verify(token, configAuth.jwt.secret);
 
     const { sub } = decoded as TokenPayload;
     request.user = {
-        id: sub
-    }
+      id: sub,
+    };
 
     return next();
-
   } catch {
     throw new AppError("Token JWT inválido", 401);
   }
