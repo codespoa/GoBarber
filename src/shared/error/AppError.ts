@@ -3,9 +3,9 @@ class AppError {
   public readonly errorCode: number;
 
   constructor(errorMessage: string, errorCode = 400) {
-    this.errorMessage = errorMessage;
-    this.errorCode = errorCode;
+    this.errorMessage = errorMessage
+    this.errorCode = errorCode
   }
 }
 
-export default AppError;
+export default AppError
