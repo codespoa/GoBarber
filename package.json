@@ -24,8 +24,9 @@
     "reflect-metadata": "^0.1.13",
     "require-dir": "^1.2.0",
     "typeorm": "^0.2.25",
-    "uuid": "^8.3.0",
-    "uuidv4": "^6.2.2"
+    "uuid": "^8.3.1",
+    "uuidv4": "^6.2.2",
+    "v4": "^0.0.1"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",

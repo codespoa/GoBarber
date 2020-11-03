@@ -23,7 +23,7 @@ class CreateAppointmentService {
     )
 
     if (findAppointmentInSameDate) {
-      throw new AppError("Horario de agendamento está indisponível", 400)
+      throw new AppError("Horario de agendamento está indisponível", 401)
     }
 
     const appointment = await this.appointmentsRepository.create({

@@ -1,37 +1,37 @@
-import { getRepository, Repository } from "typeorm";
+import { getRepository, Repository } from "typeorm"
 
-import IUsersRepository from "@modules/users/repositories/IUsersRepository";
-import ICreateUserDTO from "@modules/users/dtos/ICreateUserDTO";
+import IUsersRepository from "@modules/users/repositories/IUsersRepository"
+import ICreateUserDTO from "@modules/users/dtos/ICreateUserDTO"
 
-import User from "@modules/users/infra/typeorm/entities/User";
+import User from "@modules/users/infra/typeorm/entities/User"
 
 class UsersRepository implements IUsersRepository {
   private ormRepository: Repository<User>;
   constructor() {
-    this.ormRepository = getRepository(User);
+    this.ormRepository = getRepository(User)
   }
   public async findById(id: string): Promise<User | undefined> {
-    const user = await this.ormRepository.findOne(id);
+    const user = await this.ormRepository.findOne(id)
 
-    return user;
+    return user
   }
   public async findByEmail(email: string): Promise<User | undefined> {
-    const user = await this.ormRepository.findOne({ where: { email: email } });
+    const user = await this.ormRepository.findOne({ where: { email: email } })
 
-    return user;
+    return user
   }
 
   public async create(userData: ICreateUserDTO): Promise<User> {
-    const appointment = this.ormRepository.create(userData);
+    const appointment = this.ormRepository.create(userData)
 
-    await this.ormRepository.save(appointment);
+    await this.ormRepository.save(appointment)
 
-    return appointment;
+    return appointment
   }
 
   save(user: User): Promise<User> {
-    return this.ormRepository.save(user);
+    return this.ormRepository.save(user)
   }
 }
 
-export default UsersRepository;
+export default UsersRepository
