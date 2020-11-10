@@ -1,6 +1,6 @@
 import FakeAppoinmentsRepository from "../repositories/fakes/FakeAppoinmentsRepository"
 import CreateAppointmentService from "./CreateAppointmentService"
-import AppError from '@shared/error/AppError'
+import AppError from "@shared/error/AppError"
 
 describe("CreateAppointment", () => {
   it("should be able to create a new appointment", async () => {
@@ -31,9 +31,11 @@ describe("CreateAppointment", () => {
       provider_id: "12344556",
     })
 
-    expect(createAppointment.execute({
-      date: appointmentDate,
-      provider_id: "12344556",
-    })).rejects.toBeInstanceOf(AppError)
+    expect(
+      createAppointment.execute({
+        date: appointmentDate,
+        provider_id: "12344556",
+      })
+    ).rejects.toBeInstanceOf(AppError)
   })
 })

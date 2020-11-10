@@ -16,7 +16,7 @@ class UsersRepository implements IUsersRepository {
     return user
   }
   public async findByEmail(email: string): Promise<User | undefined> {
-    const user = await this.ormRepository.findOne({ where: { email: email } })
+    const user = await this.ormRepository.findOne({ where: { email } })
 
     return user
   }
@@ -29,7 +29,7 @@ class UsersRepository implements IUsersRepository {
     return appointment
   }
 
-  save(user: User): Promise<User> {
+  public async save(user: User): Promise<User> {
     return this.ormRepository.save(user)
   }
 }

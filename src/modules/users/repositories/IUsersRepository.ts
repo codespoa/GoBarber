@@ -1,5 +1,4 @@
 import User from '@modules/users/infra/typeorm/entities/User'
-
 import IcreateUser from '@modules/users/dtos/ICreateUserDTO'
 
 export default interface IUsersRepository {

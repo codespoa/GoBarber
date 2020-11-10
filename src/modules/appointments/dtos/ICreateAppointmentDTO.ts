@@ -3,4 +3,4 @@ interface ICreateAppointmentDto {
   date: Date;
 }
 
-export default ICreateAppointmentDto;
+export default ICreateAppointmentDto
